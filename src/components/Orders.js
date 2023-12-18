@@ -3,11 +3,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import populateTable from "../helpers/populateTable";
 import { useNavigate, Link } from "react-router-dom";
 import { Pagination } from "react-bootstrap";
+import { jwtDecode } from "jwt-decode";
 
 const Order = () => {
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [role, setRole] = useState("USER");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,6 +40,10 @@ const Order = () => {
         console.error("Error al obtener datos:", error);
       }
     };
+
+    const token = localStorage.getItem("token");
+    const { role } = jwtDecode(token);
+    setRole(role);
     fetchData();
     //const intervalId = setInterval(fetchData, 3000);
     //return () => clearInterval(intervalId);
@@ -72,11 +78,13 @@ const Order = () => {
                 <Link to={`/products`}>Productos</Link>
               </a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                <Link to={`/analytics`}>Analytics</Link>
-              </a>
-            </li>
+            {role === "ADMIN" && (
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  <Link to={`/analytics`}>Estadisticas</Link>
+                </a>
+              </li>
+            )}
           </ul>
           <div className="mt-auto">
             <ul className="nav flex-column">

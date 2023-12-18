@@ -5,10 +5,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { jwtDecode } from "jwt-decode";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
+  const [role, setRole] = useState("USER");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,6 +34,9 @@ const Products = () => {
         console.error("Error al obtener datos:", error);
       }
     };
+    const token = localStorage.getItem("token");
+    const { role } = jwtDecode(token);
+    setRole(role);
     fetchData();
   }, []);
 
@@ -92,11 +97,13 @@ const Products = () => {
                 <Link to={`/products`}>Productos</Link>
               </a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                <Link to={`/analytics`}>Analytics</Link>
-              </a>
-            </li>
+            {role === "ADMIN" && (
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  <Link to={`/analytics`}>Estadisticas</Link>
+                </a>
+              </li>
+            )}
           </ul>
           <div className="mt-auto">
             <ul className="nav flex-column">

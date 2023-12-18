@@ -1,13 +1,11 @@
-const jwt = require("jsonwebtoken");
-const decodeToken = () => {
-  const token = "tu-token-jwt-aqui";
-  const claveSecreta = "tu-clave-secreta-aqui"; // La clave secreta utilizada para firmar el token
+import { jwtDocode } from 'jwt-decode'
 
-  jwt.verify(token, claveSecreta, (err, decoded) => {
-    if (err) {
-      console.error("Error al verificar el token:", err);
+const decodeToken = (token) => {
+  jwt.verify(token, "jwt-3ncrypt3d-p4ssw0rd", (error, decode) => {
+    if (error) {
+      console.log("Error", error);
     } else {
-      return decoded;
+      console.log("Decode", decode);
     }
   });
 };

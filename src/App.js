@@ -9,6 +9,7 @@ import Orders from "./components/Orders";
 import "simplebar/dist/simplebar.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Products from "./components/Products";
+import Analytics from "./components/Analytics";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/register" exact element={<Register />} />
           <Route path="/orders" exact element={<Orders />} />
           <Route path="/products" exact element={<Products />} />
+          <Route path="/analytics" exact element={<Analytics />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
