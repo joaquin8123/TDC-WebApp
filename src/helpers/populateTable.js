@@ -5,14 +5,14 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const populateTable = (orders) => {
+const populateTable = (orders, filterStatus) => {
   const mapColors = {
     PROCESSING: "blue",
     CONFIRMED: "green",
     PENDING: "yellow",
     CANCELLED: "red",
   };
-  
+
   const updateOrder = async (params) => {
     const { orderId, status } = params;
     const paramsUpdate = {
@@ -42,6 +42,10 @@ const populateTable = (orders) => {
     }
   };
 
+  const filteredOrders = filterStatus
+    ? orders.filter((order) => order.status === filterStatus.toUpperCase())
+    : orders;
+
   return (
     <table className="table table-striped table-bordered">
       <thead className="thead-dark">
@@ -55,7 +59,7 @@ const populateTable = (orders) => {
         </tr>
       </thead>
       <tbody>
-        {orders.map((item) => (
+        {filteredOrders.map((item) => (
           <tr key={item.orderId}>
             <td>
               <Link to={`/order/${item.orderId}`}>

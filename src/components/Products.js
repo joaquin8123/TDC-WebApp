@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { jwtDecode } from "jwt-decode";
@@ -73,6 +73,10 @@ const Products = () => {
     }
   };
 
+  const createProduct = async () => {
+    navigate("/add-product");
+  };
+
   const mapColors = {
     activo: "green",
     inactivo: "red",
@@ -124,6 +128,16 @@ const Products = () => {
       <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h1 className="h2">Productos</h1>
+          <div className="d-flex mt-2 ml-2">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => createProduct()}
+            >
+              <FontAwesomeIcon icon={faPlus} className="mr-2" />
+              Agregar Producto
+            </button>
+          </div>
         </div>
 
         {/* Tabla de productos */}

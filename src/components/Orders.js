@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import populateTable from "../helpers/populateTable";
-import { useNavigate, Link } from "react-router-dom";
 import { Pagination } from "react-bootstrap";
+import { useNavigate, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import populateTable from "../helpers/populateTable";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
 const Order = () => {
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [role, setRole] = useState("USER");
+  const [filter, setFilter] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,9 +48,7 @@ const Order = () => {
     const { role } = jwtDecode(token);
     setRole(role);
     fetchData();
-    //const intervalId = setInterval(fetchData, 3000);
-    //return () => clearInterval(intervalId);
-  }, [currentPage]);
+  }, [currentPage, filter]);
 
   const logOut = async () => {
     localStorage.removeItem("authenticated");
@@ -59,12 +60,20 @@ const Order = () => {
     setCurrentPage(page);
   };
 
+  const handleFilterClick = (selectedFilter) => {
+    if (filter === selectedFilter) {
+      setFilter(null);
+    } else {
+      setFilter(selectedFilter);
+    }
+  };
+
   return (
     <div className="d-flex">
       {/* Barra lateral */}
       <nav
         id="sidebar"
-        className="col-md-3 col-lg-2 d-md-block bg-light sidebar vh-100" // Añade la clase vh-100
+        className="col-md-3 col-lg-2 d-md-block bg-light sidebar vh-100"
       >
         <div className="position-sticky d-flex flex-column">
           <ul className="nav flex-column mb-auto">
@@ -105,10 +114,30 @@ const Order = () => {
       <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h1 className="h2">Orders</h1>
+          {/* Filtros */}
+          <div className="d-flex mt-2 ml-2">
+            {["pending", "confirmed", "cancelled", "processing"].map((f) => (
+              <button
+                key={f}
+                type="button"
+                className={`btn btn-${
+                  filter === f ? "primary" : "secondary"
+                } rounded-pill mr-2`}
+                onClick={() => handleFilterClick(f)}
+              >
+                {f.charAt(0).toUpperCase() + f.slice(1)}
+              </button>
+            ))}
+            <FontAwesomeIcon
+              icon={faFilter}
+              className="ml-2"
+              style={{ height: "38px" }}
+            />
+          </div>
         </div>
 
         {/* Tabla de pedidos */}
-        {populateTable(orders)}
+        {populateTable(orders, filter)}
 
         <Pagination>
           {Array.from({ length: totalPages }, (_, index) => (
