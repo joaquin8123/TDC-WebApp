@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaUser, FaLock } from "react-icons/fa"; // Importa los iconos de react-icons/fa
+import { FaUser, FaLock } from "react-icons/fa";
 import "simplebar/dist/simplebar.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";

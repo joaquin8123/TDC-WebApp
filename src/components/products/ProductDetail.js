@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useNavigate, Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import Navbar from "../shared/Navbar";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -44,12 +45,6 @@ const ProductDetail = () => {
     fetchData();
   }, []);
 
-  const logOut = async () => {
-    localStorage.removeItem("authenticated");
-    localStorage.removeItem("token");
-    navigate("/");
-  };
-
   const backOrders = async () => {
     navigate("/products");
   };
@@ -57,44 +52,7 @@ const ProductDetail = () => {
   return (
     <div className="d-flex">
       {/* Barra lateral */}
-      <nav
-        id="sidebar"
-        className="col-md-3 col-lg-2 d-md-block bg-light sidebar vh-100"
-      >
-        <div className="position-sticky d-flex flex-column">
-          <ul className="nav flex-column mb-auto">
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                <Link to={`/orders`}>Ordenes</Link>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                <Link to={`/products`}>Productos</Link>
-              </a>
-            </li>
-            {role === "ADMIN" && (
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  <Link to={`/analytics`}>Estadisticas</Link>
-                </a>
-              </li>
-            )}
-          </ul>
-          <div className="mt-auto">
-            <ul className="nav flex-column">
-              <li className="nav-item">
-                <button
-                  className="btn btn-outline-danger btn-sm"
-                  onClick={logOut}
-                >
-                  Log Out
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <Navbar role={role} />
 
       {/* Contenido principal */}
       <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -160,7 +118,9 @@ const ProductDetail = () => {
                       />
                     </div>
                     <div className="input-group mb-4">
-                      <span className="input-group-text">Tiempo de Preparacion</span>
+                      <span className="input-group-text">
+                        Tiempo de Preparacion
+                      </span>
                       <input
                         className="form-control"
                         type="text"

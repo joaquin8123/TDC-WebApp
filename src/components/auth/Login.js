@@ -5,7 +5,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "simplebar/dist/simplebar.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaUser, FaLock } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -40,6 +39,7 @@ const Login = () => {
         const { data, code } = await response.json();
         if (code === 200) {
           toast.success("Inicio de sesión exitoso");
+          localStorage.setItem("clientId", data.clientId);
           localStorage.setItem("authenticated", true);
           localStorage.setItem("token", data.token);
           navigate("/orders");
@@ -56,7 +56,7 @@ const Login = () => {
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <div className="container">
         <div className="row justify-content-center">
-          <div className="col-md-8">
+          <div className="col-md-6">
             <div className="card-group d-block d-md-flex row">
               <div className="card col-md-6 p-4 mb-0">
                 <div className="card-body">
@@ -110,26 +110,6 @@ const Login = () => {
                       </button>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="card col-md-6 text-white bg-primary py-5">
-                <div className="card-body text-center">
-                  <h2>Sign up</h2>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                  </p>
-
-                  <Link to={`/register`}>
-                    <button
-                      className="btn btn-lg btn-outline-light mt-3"
-                      type="button"
-                    >
-                      {" "}
-                      Register Now!
-                    </button>
-                  </Link>
                 </div>
               </div>
             </div>

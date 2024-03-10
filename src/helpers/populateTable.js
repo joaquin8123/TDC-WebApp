@@ -4,8 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-const populateTable = (orders, filterStatus) => {
+const KEYS_WRITE_ACCESS = ["WRITE_ORDERS", "ACCESS_ADMIN"];
+const KEYS_READ_ACCESS = ["READ_ORDERS", "ACCESS_ADMIN"];
+const populateTable = (orders, filterStatus, permissions) => {
   const mapColors = {
     PROCESSING: "blue",
     CONFIRMED: "green",
@@ -58,64 +59,87 @@ const populateTable = (orders, filterStatus) => {
           <th>Tiempo estimado(min)</th>
         </tr>
       </thead>
-      <tbody>
-        {filteredOrders.map((item) => (
-          <tr key={item.orderId}>
-            <td>
-              <Link to={`/order/${item.orderId}`}>
-                <FontAwesomeIcon icon={faSearch} />
-              </Link>
-            </td>
-            <td>{item.clientName}</td>
-            <td>{item.date}</td>
-            <td
-              style={{
-                color: mapColors[item.status],
-              }}
-            >
-              <strong>{item.status}</strong>
-            </td>
-            <td>{item.amount}</td>
-            <td>{item.deliveryTime}</td>
-            <td>
-              {item.status === "PENDING" && (
-                <button
-                  style={{ marginRight: "5px" }}
-                  className="btn btn-success btn-sm"
-                  onClick={() =>
-                    updateOrder({ orderId: item.orderId, status: "PROCESSING" })
-                  }
-                >
-                  Confirmar
-                </button>
-              )}
+      {KEYS_READ_ACCESS.some((permission) =>
+        permissions.includes(permission)
+      ) && (
+        <tbody>
+          {filteredOrders.map((item) => (
+            <tr key={item.orderId}>
+              <td>
+                <Link to={`/order/${item.orderId}`}>
+                  <FontAwesomeIcon icon={faSearch} />
+                </Link>
+              </td>
+              <td>{item.clientName}</td>
+              <td>{item.date}</td>
+              <td
+                style={{
+                  color: mapColors[item.status],
+                }}
+              >
+                <strong>{item.status}</strong>
+              </td>
+              <td>{item.amount}</td>
+              <td>{item.deliveryTime}</td>
+              <td>
+                {KEYS_WRITE_ACCESS.some((permission) =>
+                  permissions.includes(permission)
+                ) &&
+                  item.status === "PENDING" && (
+                    <button
+                      style={{ marginRight: "5px" }}
+                      className="btn btn-success btn-sm"
+                      onClick={() =>
+                        updateOrder({
+                          orderId: item.orderId,
+                          status: "PROCESSING",
+                        })
+                      }
+                    >
+                      Confirmar
+                    </button>
+                  )}
 
-              {item.status === "PROCESSING" && (
-                <button
-                  className="btn btn-success btn-sm"
-                  style={{ marginRight: "5px" }}
-                  onClick={() =>
-                    updateOrder({ orderId: item.orderId, status: "CONFIRMED" })
-                  }
-                >
-                  Finalizar
-                </button>
-              )}
+                {KEYS_WRITE_ACCESS.some((permission) =>
+                  permissions.includes(permission)
+                ) &&
+                  item.status === "PROCESSING" && (
+                    <button
+                      className="btn btn-success btn-sm"
+                      style={{ marginRight: "5px" }}
+                      onClick={() =>
+                        updateOrder({
+                          orderId: item.orderId,
+                          status: "CONFIRMED",
+                        })
+                      }
+                    >
+                      Finalizar
+                    </button>
+                  )}
 
-              {item.status !== "CANCELLED" && item.status !== "CONFIRMED" && (
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() =>
-                    updateOrder({ orderId: item.orderId, status: "CANCELLED" })
-                  }
-                >
-                  Cancelar
-                </button>
-              )}
-            </td>
-          </tr>
-        ))}
-      </tbody>
+                {KEYS_WRITE_ACCESS.some((permission) =>
+                  permissions.includes(permission)
+                ) &&
+                  item.status !== "CANCELLED" &&
+                  item.status !== "CONFIRMED" && (
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() =>
+                        updateOrder({
+                          orderId: item.orderId,
+                          status: "CANCELLED",
+                        })
+                      }
+                    >
+                      Cancelar
+                    </button>
+                  )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      )}
     </table>
   );
 };
