@@ -74,6 +74,17 @@ const GroupEdit = () => {
   };
   const updateGroup = async ({ group }) => {
     return;
+    await fetch(`http://localhost:3002/group/permissions`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        groupId,
+        permissionsIds: group.selectedPermissionIds,
+      }),
+    });
   };
 
   return (

@@ -64,6 +64,7 @@ const Products = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
       },
       body: JSON.stringify({ productId, active }),
     };
@@ -73,7 +74,6 @@ const Products = () => {
         "http://localhost:3002/product/",
         paramsUpdate
       );
-
       if (!response.ok) {
         toast.error("Ocurrio un error al intentar actualizar el producto");
       }
