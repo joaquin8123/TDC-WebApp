@@ -15,14 +15,14 @@ const populateTable = (orders, filterStatus, permissions) => {
   };
 
   const updateOrder = async (params) => {
-    const { orderId, status } = params;
+    const { orderId, status, userId } = params;
     const paramsUpdate = {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token"),
       },
-      body: JSON.stringify({ orderId, status }),
+      body: JSON.stringify({ orderId, status, userId }),
     };
 
     try {
@@ -89,12 +89,13 @@ const populateTable = (orders, filterStatus, permissions) => {
                     <button
                       style={{ marginRight: "5px" }}
                       className="btn btn-success btn-sm"
-                      onClick={() =>
+                      onClick={() => {
                         updateOrder({
                           orderId: item.orderId,
                           status: "PROCESSING",
-                        })
-                      }
+                          userId: localStorage.getItem("clientId"),
+                        });
+                      }}
                     >
                       Confirmar
                     </button>
@@ -111,6 +112,7 @@ const populateTable = (orders, filterStatus, permissions) => {
                         updateOrder({
                           orderId: item.orderId,
                           status: "CONFIRMED",
+                          userId: localStorage.getItem("clientId"),
                         })
                       }
                     >
@@ -129,6 +131,7 @@ const populateTable = (orders, filterStatus, permissions) => {
                         updateOrder({
                           orderId: item.orderId,
                           status: "CANCELLED",
+                          userId: localStorage.getItem("clientId"),
                         })
                       }
                     >

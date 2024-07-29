@@ -20,6 +20,9 @@ import Groups from "./components/groups/Groups";
 import NewGroup from "./components/groups/NewGroup";
 import GroupDetail from "./components/groups/GroupDetail";
 import GroupEdit from "./components/groups/GroupEdit";
+import PurchaseOrder from "./components/purchase order/PurchaseOrder";
+import PurchaseOrderDetail from "./components/purchase order/PurchaseOrderDetail";
+import NewPurchaseOrder from "./components/purchase order/NewPurchaseOrder";
 
 function App() {
   return (
@@ -42,6 +45,13 @@ function App() {
           <Route path="/analytics" exact element={<Analytics />} />
           <Route path="/users" exact element={<Users />} />
           <Route path="/groups" exact element={<Groups />} />
+          <Route path="/purchase-order" exact element={<PurchaseOrder />} />
+          <Route path="/purchase-order/:id" element={<PurchaseOrderDetail />} />
+          <Route
+            path="/purchase-order/add"
+            exact
+            element={<NewPurchaseOrder />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

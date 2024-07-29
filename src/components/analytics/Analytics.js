@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AmountMonthly from "./AmountMonthly";
 import { jwtDecode } from "jwt-decode";
 import Navbar from "../shared/Navbar";
+import AuditReport from "./AuditReport";
 
 const Analytics = () => {
   const navigate = useNavigate();
@@ -45,9 +46,12 @@ const Analytics = () => {
             <SalesByProduct />
           </div>
         </div>
-        <div>
-          <div className="col-md-12">
+        <div className="row">
+          <div className="col-md-6">
             <AmountMonthly />
+          </div>
+          <div className="col-md-6">
+            <AuditReport />
           </div>
         </div>
       </main>

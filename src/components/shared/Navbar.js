@@ -18,6 +18,17 @@ const Navbar = (props) => {
   }, []);
 
   const logOut = async () => {
+    const paramsLogOut = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+      body: JSON.stringify({ clientId: localStorage.getItem("clientId") }),
+    };
+
+    await fetch("http://localhost:3002/auth/logout", paramsLogOut);
+
     localStorage.removeItem("authenticated");
     localStorage.removeItem("token");
     localStorage.removeItem("clientId");
@@ -59,6 +70,13 @@ const Navbar = (props) => {
             <li className="nav-item">
               <a className="nav-link" href="#">
                 <Link to={`/groups`}>Grupos</Link>
+              </a>
+            </li>
+          )}
+          {role === "ADMIN" && (
+            <li className="nav-item">
+              <a className="nav-link" href="#">
+                <Link to={`/purchase-order`}>Proveedores</Link>
               </a>
             </li>
           )}
